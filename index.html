@@ -7,167 +7,57 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="data.js"></script>
     <style>
-        :root { --bg: #F8F9F7; --card: #FFFFFF; --accent: #6B705C; --sub: #A5A58D; --text: #2D3436; --walk: #E76F51; }
-        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 80px; -webkit-font-smoothing: antialiased; }
-        
-        .page { display: none; padding: 15px; }
-        .page.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* 天氣看板 */
-        .weather-box {
-            background: linear-gradient(135deg, #6B705C 0%, #A5A58D 100%);
-            margin: 10px 0 20px; padding: 20px; border-radius: 24px; color: white;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 8px 20px rgba(107, 112, 92, 0.2);
-        }
-        .temp-now { font-size: 2.2rem; font-weight: bold; }
-        #weather-icon { width: 55px; height: 55px; }
-
-        header { text-align: center; padding: 20px 0 10px; }
-        h1 { font-weight: 200; letter-spacing: 5px; font-size: 1.5rem; margin: 0; color: var(--accent); }
-
-        .day-header { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 10px; }
-        .day-label { font-size: 0.95rem; font-weight: 700; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 15px; }
-        .btn-route { font-size: 0.65rem; color: #FFF; background: var(--sub); padding: 5px 12px; border-radius: 15px; text-decoration: none; }
-        
-        .card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); cursor: pointer; position: relative; }
-        
-        /* 修正：將 Tag 改為靠左對齊，並調整間距 */
-        .tag { 
-            display: inline-block;
-            font-size: 0.65rem; 
-            background: #F1F3F2; 
-            padding: 3px 10px; 
-            border-radius: 6px; 
-            color: var(--accent); 
-            font-weight: 700;
-            border: 1px solid rgba(0,0,0,0.05);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px; /* 增加與標題的間距 */
-        }
-
-        .title { font-size: 1.1rem; margin-bottom: 6px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; clear: both; }
-        .info { font-size: 0.8rem; color: #7f8c8d; line-height: 1.5; }
-
-        /* 點擊展開菜單 */
-        .menu-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: #FAFBF9; border-radius: 12px; }
-        .card.open .menu-content { max-height: 500px; margin-top: 15px; padding: 15px; border: 1px dashed var(--sub); }
-        .menu-item { font-size: 0.85rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: flex-start; line-height: 1.4; }
-        .menu-item::before { content: "✨"; margin-right: 8px; font-size: 0.7rem; margin-top: 2px; }
-
-        .trans-node { margin: 10px 0 10px 30px; font-size: 0.75rem; color: var(--walk); border-left: 1px dashed #CCC; padding-left: 18px; font-style: italic; }
-        .btn-map { font-size: 0.75rem; color: var(--accent); text-decoration: none; border: 1px solid #EEE; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; margin-top: 12px; background: #FFF; }
-
-        /* 底部導覽 */
-        .tab-bar { position: fixed; bottom: 0; width: 100%; background: #FFF; display: flex; box-shadow: 0 -2px 15px rgba(0,0,0,0.05); z-index: 100; }
-        .tab-item { flex: 1; text-align: center; padding: 15px 0; font-size: 0.75rem; color: #BBB; cursor: pointer; }
-        .tab-item.active { color: var(--accent); font-weight: bold; }
-        .tab-item i { display: block; font-size: 1.3rem; margin-bottom: 4px; }
-        
-        .backup-card { background: #FFF; border-radius: 18px; padding: 18px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        :root { --bg: #F8F9F7; --card: #FFFFFF; --accent: #6B705C; --sub: #A5A58D; --text: #2D3436; --walk: #E76F51; --michelin: #e63946; }
+        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 40px; -webkit-font-smoothing: antialiased; }
+        header { text-align: center; padding: 25px 0 15px; background: #FFF; margin-bottom: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        h1 { font-weight: 300; letter-spacing: 4px; font-size: 1.4rem; margin: 0; color: var(--accent); }
+        .page { padding: 15px; }
+        .day-header { margin: 25px 0 12px; }
+        .day-label { font-size: 1rem; font-weight: 700; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 15px; }
+        .card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); position: relative; }
+        .tag { display: inline-block; font-size: 0.65rem; background: #F1F3F2; padding: 3px 10px; border-radius: 6px; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+        .tag.michelin { background: #fff1f0; color: var(--michelin); border: 1px solid #ffa39e; }
+        .title { font-size: 1.1rem; margin-bottom: 6px; font-weight: 600; line-height: 1.3; }
+        .info { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 8px; }
+        .trans-node { margin: 10px 0 10px 30px; font-size: 0.8rem; color: var(--walk); font-weight: 600; display: flex; align-items: center; gap: 8px; border-left: 1px dashed #CCC; padding-left: 15px; }
+        .menu-content { margin-top: 10px; padding: 12px; background: #FAFBF9; border-radius: 12px; border: 1px dashed var(--sub); }
+        .menu-item { font-size: 0.85rem; color: var(--accent); margin-bottom: 5px; line-height: 1.4; }
+        .btn-map { display: inline-block; font-size: 0.75rem; color: var(--accent); text-decoration: none; border: 1px solid #EEE; padding: 6px 14px; border-radius: 20px; margin-top: 10px; background: #FFF; font-weight: 500; }
+        .option-label { position: absolute; top: 18px; right: 18px; font-size: 0.7rem; color: #FFF; background: var(--sub); padding: 2px 8px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-<div id="itinerary" class="page active">
-    <header><h1>HANOI GOGO</h1></header>
+<header><h1>HANOI GOGO</h1></header>
 
-    <div id="itinerary-container"></div>
-</div>
-
-<div id="backup" class="page">
-    <header><h1>NIGHTLIFE</h1></header>
-    <div id="backup-container" style="padding: 10px;"></div>
-</div>
-
-<nav class="tab-bar">
-    <div class="tab-item active" onclick="showPage('itinerary', this)"><i class="fas fa-map-marked-alt"></i>行程</div>
-    <div class="tab-item" onclick="showPage('backup', this)"><i class="fas fa-moon"></i>候補</div>
-</nav>
+<div id="itinerary" class="page"></div>
 
 <script>
-    async function updateWeather() {
-        const apiKey = '8952848b81c38568d06757449910243d';
-        try {
-            const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Hanoi&units=metric&lang=zh_tw&appid=${apiKey}`);
-            const data = await res.json();
-            document.getElementById('temp').innerText = `${Math.round(data.main.temp)}°`;
-            document.getElementById('desc').innerText = data.weather[0].description;
-            document.getElementById('feels-like').innerText = `體感 ${Math.round(data.main.feels_like)}°`;
-            const icon = data.weather[0].icon;
-            const iconImg = document.getElementById('weather-icon');
-            iconImg.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
-            iconImg.style.display = 'block';
-        } catch (e) { console.error("天氣載入失敗"); }
-    }
+    function render() {
+        const container = document.getElementById('itinerary');
+        // 檢查資料是否正確載入
+        if (typeof ITINERARY_DATA === 'undefined') {
+            container.innerHTML = "<p style='text-align:center; padding:50px;'>找不到 data.js 資料，請確保檔案在同一個資料夾且名稱正確。</p>";
+            return;
+        }
 
-    function showPage(id, el) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        el.classList.add('active');
-        window.scrollTo(0,0);
-    }
-
-    function toggleMenu(el) {
-        el.classList.toggle('open');
-        const icon = el.querySelector('.fa-chevron-down');
-        if(icon) icon.style.transform = el.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-    }
-
-    function renderApp() {
-        const container = document.getElementById('itinerary-container');
         container.innerHTML = ITINERARY_DATA.map(day => `
-            <div class="day-header">
-                <div class="day-label">${day.day} · ${day.date}</div>
-                ${day.route ? `<a href="${day.route}" class="btn-route" target="_blank"><i class="fas fa-route"></i> 住宿出發</a>` : ''}
-            </div>
+            <div class="day-header"><div class="day-label">${day.day} · ${day.date}</div></div>
             ${day.items.map(item => item.trans ? 
-                `<div class="trans-node">${item.trans}</div>` : 
-                `<div class="card ${item.menu ? 'has-menu' : ''}" onclick="${item.menu ? 'toggleMenu(this)' : ''}">
-                    <span class="tag">${item.tag}</span>
-                    <div class="title">
-                        ${item.title} 
-                        ${item.menu ? '<i class="fas fa-chevron-down" style="font-size:0.7rem; color:#CCC; transition:0.3s;"></i>' : ''}
-                    </div>
-                    <div class="info">${item.info}</div>
-                    ${item.menu ? `
-                        <div class="menu-content">
-                            <div style="font-size:0.75rem; font-weight:bold; color:var(--sub); margin-bottom:10px;">RECOMMENDED:</div>
-                            ${item.menu.map(m => `<div class="menu-item">${m}</div>`).join('')}
-                        </div>
-                    ` : ''}
-                    ${item.map ? `<a href="${item.map}" class="btn-map" target="_blank" onclick="event.stopPropagation();"><i class="fas fa-location-arrow"></i> MAP</a>` : ''}
+                `<div class="trans-node"><i class="fas fa-clock"></i> ${item.trans}</div>` : 
+                `<div class="card">
+                    ${item.isOption ? `<div class="option-label">${item.isOption}</div>` : ''}
+                    <span class="tag ${item.tag === 'Michelin' ? 'michelin' : ''}">${item.tag}</span>
+                    <div class="title">${item.title}</div>
+                    <div class="info"><i class="far fa-calendar-alt"></i> ${item.info}</div>
+                    ${item.menu ? `<div class="menu-content">${item.menu.map(m => `<div class="menu-item">• ${m}</div>`).join('')}</div>` : ''}
+                    ${item.map ? `<a href="${item.map}" class="btn-map" target="_blank"><i class="fas fa-map-marker-alt"></i> Google Maps</a>` : ''}
                 </div>`
             ).join('')}
         `).join('');
-
-        const backupContainer = document.getElementById('backup-container');
-        let backupHtml = `<h3 style="color:var(--accent);"><i class="fas fa-spa"></i> 按摩候補</h3>`;
-        backupHtml += BACKUP_LIST.massage.map(i => `
-            <div class="backup-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                    <div><b>${i.name}</b><br><small style="color:#999;">🕙 ${i.time}</small></div>
-                    <a href="${i.map}" class="btn-map" target="_blank">MAP</a>
-                </div>
-                <div style="margin-top:10px; font-size:0.75rem; color:var(--sub); line-height:1.4;">${i.menu.join(' · ')}</div>
-            </div>`).join('');
-        
-        backupHtml += `<h3 style="color:var(--accent); margin-top:30px;"><i class="fas fa-cocktail"></i> 酒吧候補</h3>`;
-        backupHtml += BACKUP_LIST.bars.map(i => `
-            <div class="backup-card">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                    <div><b>${i.name}</b><br><small style="color:#999;">🕙 ${i.time}</small></div>
-                    <a href="${i.map}" class="btn-map" target="_blank">MAP</a>
-                </div>
-                <div style="margin-top:10px; font-size:0.75rem; color:var(--sub); line-height:1.4;">${i.menu.join(' · ')}</div>
-            </div>`).join('');
-        backupContainer.innerHTML = backupHtml;
     }
-
-    window.onload = () => { renderApp(); updateWeather(); };
+    // 確保 DOM 載入後執行
+    document.addEventListener('DOMContentLoaded', render);
 </script>
 </body>
 </html>
