@@ -3,205 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hanoi Journey 2026</title>
+    <title>Hanoi Trip 2026</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="data.js"></script>
     <style>
-        :root {
-            --bg: #F8F9F7; --card: #FFFFFF; --accent: #6B705C; --sub: #A5A58D;
-            --text: #2D3436; --walk: #E76F51; --yu: #E76F51; --pa: #264653;
-        }
-        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 80px; }
+        :root { --bg: #F8F9F7; --card: #FFFFFF; --accent: #6B705C; --sub: #A5A58D; --text: #2D3436; --walk: #E76F51; }
+        body { font-family: -apple-system, "Noto Sans TC", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 80px; -webkit-font-smoothing: antialiased; }
         
-        /* Tab Menu */
-        .tab-bar { position: fixed; bottom: 0; width: 100%; background: #FFF; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; }
-        .tab-item { flex: 1; text-align: center; padding: 12px 0; font-size: 0.7rem; color: #999; cursor: pointer; }
-        .tab-item.active { color: var(--accent); font-weight: bold; }
-        .tab-item i { display: block; font-size: 1.2rem; margin-bottom: 4px; }
-
-        .page { display: none; padding: 20px 15px; }
+        /* 頁面切換動畫 */
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        header { text-align: center; padding: 20px 0; }
-        h1 { font-weight: 200; letter-spacing: 5px; font-size: 1.4rem; margin: 0; color: var(--accent); }
+        header { text-align: center; padding: 25px 0 10px; }
+        h1 { font-weight: 200; letter-spacing: 6px; font-size: 1.5rem; margin: 0; color: var(--accent); }
+
+        /* 行程標題與路線按鈕 */
+        .day-header { display: flex; justify-content: space-between; align-items: flex-end; margin: 30px 0 12px; }
+        .day-label { font-size: 0.95rem; font-weight: 700; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 15px; }
+        .btn-route { font-size: 0.7rem; color: #FFF; background: var(--sub); padding: 5px 12px; border-radius: 15px; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
         /* 行程卡片樣式 */
-        .day-label { font-size: 0.85rem; font-weight: 700; color: var(--accent); margin: 25px 0 10px; border-left: 3px solid var(--accent); padding-left: 12px; }
-        .card { background: var(--card); border-radius: 16px; padding: 15px; margin-bottom: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .time { font-weight: 700; font-size: 0.9rem; margin-right: 8px; }
-        .tag { font-size: 0.6rem; background: #F1F3F2; padding: 2px 6px; border-radius: 4px; color: var(--sub); }
-        .title { font-size: 1rem; margin: 8px 0; font-weight: 500; display: block; text-decoration: none; color: inherit; }
-        .info { font-size: 0.75rem; color: #52b788; display: block; }
-        .trans { margin: 10px 0 10px 25px; font-size: 0.75rem; color: var(--walk); display: flex; align-items: center; }
+        .card { background: var(--card); border-radius: 20px; padding: 18px; margin-bottom: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); }
+        .tag { font-size: 0.65rem; background: #F1F3F2; padding: 3px 8px; border-radius: 6px; color: var(--sub); float: right; font-weight: 600; }
+        .title { font-size: 1.05rem; margin: 8px 0; font-weight: 600; color: var(--text); clear: both; }
+        .info { font-size: 0.8rem; color: #7f8c8d; line-height: 1.5; }
+        
+        /* 步行/車程節點 */
+        .trans-node { margin: 10px 0 10px 30px; font-size: 0.75rem; color: var(--walk); border-left: 1px dashed #CCC; padding-left: 18px; font-style: italic; }
 
-        /* 記帳與 To-do */
-        .tool-box { background: #2D3436; color: #EEE; padding: 20px; border-radius: 16px; margin-bottom: 15px; }
-        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; box-sizing: border-box; font-size: 0.9rem; }
-        button { background: var(--accent); color: white; font-weight: bold; }
-        .todo-item { display: flex; align-items: center; background: white; padding: 12px; border-radius: 10px; margin-bottom: 8px; color: var(--text); }
-        .todo-item input[type="checkbox"] { width: auto; margin-right: 12px; }
+        /* 地圖按鈕 */
+        .btn-map { font-size: 0.75rem; color: var(--accent); text-decoration: none; border: 1px solid #EEE; padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; background: #FFF; }
+        .btn-map:active { background: #F1F3F2; }
 
-        #expense-list { list-style: none; padding: 0; font-size: 0.8rem; }
-        #expense-list li { display: flex; justify-content: space-between; border-bottom: 1px solid #444; padding: 10px 0; }
-        .payer-tag { font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; margin-right: 5px; color: white; }
+        /* 候補清單 */
+        .backup-title { color: var(--accent); font-size: 1.1rem; margin: 25px 0 12px 5px; font-weight: bold; }
+        .backup-card { background: #FFF; border-radius: 18px; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.02); }
+
+        /* 底部導覽列 */
+        .tab-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); display: flex; box-shadow: 0 -2px 15px rgba(0,0,0,0.05); z-index: 1000; }
+        .tab-item { flex: 1; text-align: center; padding: 15px 0; font-size: 0.75rem; color: #BBB; cursor: pointer; transition: 0.3s; }
+        .tab-item.active { color: var(--accent); font-weight: bold; }
+        .tab-item i { display: block; font-size: 1.3rem; margin-bottom: 4px; }
     </style>
 </head>
 <body>
 
-<div id="itinerary" class="page active">
-    <header><h1>HANOI GOGO</h1><div style="font-size:0.7rem; color:#999;">APR 03 — APR 07</div></header>
-    
-    <div class="day-label">DAY 01 · 抵達與爵士樂</div>
-    <div class="card">
-        <span class="time">14:40 - 17:50</span><span class="tag">FLIGHT</span>
-        <div class="title">BR 385 抵達河內</div>
-    </div>
-    <div class="card">
-        <span class="time">19:30</span><span class="tag">CHECK-IN</span>
-        <a href="https://maps.app.goo.gl/uTFU78BKnRNVMJ1S8?g_st=ipc" class="title">飯店入住 & 晚餐</a>
-        <span class="info">晚餐至 22:00: <a href="https://maps.app.goo.gl/wJyH9jtY3DxXNRha8?g_st=ipc" style="color:#52b788">開啟地圖</a></span>
-    </div>
-    <div class="trans"><i class="fas fa-walking"></i> 步行約 10 分鐘</div>
-    <div class="card">
-        <span class="time">21:00</span><span class="tag">JAZZ</span>
-        <a href="https://maps.app.goo.gl/deGyysh9jKRC3na98?g_st=ipc" class="title">Binh Minh Jazz Club</a>
+    <div id="itinerary" class="page active">
+        <header>
+            <h1>HANOI GOGO</h1>
+            <div style="font-size:0.75rem; color:#AAA; margin-top:5px; letter-spacing: 1px;">APR 03 — APR 07, 2026</div>
+        </header>
+        <div id="itinerary-container"></div>
     </div>
 
-    <div class="day-label">DAY 02 · 老城逛街</div>
-    <div class="card"><span class="time">09:00</span><a href="https://maps.app.goo.gl/NuNL3DujhQnRUyuw6?g_st=ipc" class="title">Banh Mi 25 (早餐)</a></div>
-    <div class="trans"><i class="fas fa-walking"></i> 步行 15 分鐘</div>
-    <div class="card"><span class="time">10:30</span><a href="https://maps.app.goo.gl/qFAvN4zGck4t1eY96?g_st=ipc" class="title">火爐監獄 (17:00關)</a></div>
-    <div class="trans"><i class="fas fa-walking"></i> 步行 8 分鐘</div>
-    <div class="card"><span class="time">12:30</span><a href="https://maps.app.goo.gl/967vh7PuzDUfW5V28?g_st=ipc" class="title">米其林必比登午餐</a></div>
-    <div class="day-label">逛街戰區 14:00-17:00</div>
-    <div class="card">
-        <div class="title">選物與文青店巡禮</div>
-        <span class="info">
-            <a href="https://maps.app.goo.gl/wk62BSXHWaZa69Tu7?g_st=ipc">選物A</a> | 
-            <a href="https://maps.app.goo.gl/Jo995s1FxfZ8FF5K9?g_st=ipc">選物B</a> | 
-            <a href="https://maps.app.goo.gl/dg5cjhDt5SR7UV1s9?g_st=ipc">選物C</a>
-        </span>
-        <span class="info" style="margin-top:8px">逛街：<a href="https://maps.app.goo.gl/yhaPLXXktc6i2KMSA?g_st=ipc">火車街</a> / <a href="https://maps.app.goo.gl/AbqXjQKo5SA1bz72A?g_st=ipc">三十六古街</a></span>
+    <div id="backup" class="page">
+        <header>
+            <h1>NIGHTLIFE</h1>
+            <div style="font-size:0.75rem; color:#AAA; margin-top:5px;">按摩與酒吧候補</div>
+        </header>
+        
+        <div class="backup-title"><i class="fas fa-spa"></i> 按摩候補名單</div>
+        <div id="massage-list"></div>
+        
+        <div class="backup-title" style="margin-top:40px;"><i class="fas fa-cocktail"></i> 酒吧候補名單</div>
+        <div id="bar-list"></div>
     </div>
 
-    <div class="day-label">DAY 03 · 下龍灣</div>
-    <div class="card"><div class="title">下龍灣一日遊 (08:00 - 21:00)</div></div>
-
-    <div class="day-label">DAY 04 · 古蹟建築</div>
-    <div class="card"><span class="time">10:00</span><a href="https://maps.app.goo.gl/CnaPvw4FvM3cLESH9?g_st=ipc" class="title">昇龍皇城遺址</a></div>
-    <div class="trans"><i class="fas fa-walking"></i> 步行 12 分鐘</div>
-    <div class="card"><span class="time">13:30</span><a href="https://maps.app.goo.gl/m7fMkMtN4hhn8epG7?g_st=ipc" class="title">米其林一星午餐</a></div>
-    <div class="card"><span class="time">16:30</span><a href="https://maps.app.goo.gl/5kCobZZYdmp9mnew8?g_st=ipc" class="title">Giang Cafe 雞蛋咖啡</a></div>
-    <div class="card"><span class="time">19:30</span><div class="title">郵局 & UNIQLO 建築巡禮</div><span class="info"><a href="https://maps.app.goo.gl/3piw2RRiXQmRNL2v8?g_st=ipc">郵局</a> / <a href="https://maps.app.goo.gl/cVjm8vwmurVTA7gv7?g_st=ipc">UNIQLO</a></span></div>
-</div>
-
-<div id="money" class="page">
-    <header><h1>BUDGET</h1></header>
-    <div class="tool-box">
-        <h3>匯率轉換</h3>
-        <input type="number" id="vnd-in" placeholder="輸入 VND" oninput="quickConv()">
-        <div id="twd-out" style="color:#52b788; font-weight:bold;">NT$ 0</div>
-    </div>
-    <div class="tool-box">
-        <h3>雙人分帳</h3>
-        <input type="text" id="exp-n" placeholder="支出項目">
-        <input type="number" id="exp-a" placeholder="金額 (VND)">
-        <select id="exp-p">
-            <option value="Yu">Yu Wei 付款</option>
-            <option value="Pa">旅伴 付款</option>
-        </select>
-        <button onclick="addExp()">新增支出</button>
-        <ul id="expense-list"></ul>
-        <div id="settle" style="margin-top:15px; font-weight:bold; border-top:1px solid #555; padding-top:10px;"></div>
-        <button onclick="clearExp()" style="background:#636E72; font-size:0.7rem; margin-top:10px;">清除紀錄</button>
-    </div>
-</div>
-
-<div id="pre" class="page">
-    <header><h1>CHECKLIST</h1></header>
-    <div id="todo-list">
+    <nav class="tab-bar">
+        <div class="tab-item active" onclick="showPage('itinerary', this)">
+            <i class="fas fa-map-marked-alt"></i>行程
         </div>
-    <div class="tool-box">
-        <input type="text" id="new-todo" placeholder="新增待辦事項...">
-        <button onclick="addTodo()">新增</button>
-    </div>
-</div>
-
-<nav class="tab-bar">
-    <div class="tab-item active" onclick="showPage('itinerary', this)"><i class="fas fa-map-marked-alt"></i>行程</div>
-    <div class="tab-item" onclick="showPage('money', this)"><i class="fas fa-wallet"></i>記帳</div>
-    <div class="tab-item" onclick="showPage('pre', this)"><i class="fas fa-check-square"></i>準備</div>
-</nav>
+        <div class="tab-item" onclick="showPage('backup', this)">
+            <i class="fas fa-moon"></i>候補
+        </div>
+    </nav>
 
 <script>
-    const RATE = 770;
-
+    // 頁面切換功能
     function showPage(id, el) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         el.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 匯率
-    function quickConv() {
-        const v = document.getElementById('vnd-in').value;
-        document.getElementById('twd-out').innerText = `約 NT$ ${v ? (v/RATE).toFixed(0) : 0}`;
+    // 渲染主行程與候補資料
+    function renderApp() {
+        const container = document.getElementById('itinerary-container');
+        
+        // 渲染行程
+        container.innerHTML = ITINERARY_DATA.map(day => `
+            <div class="day-header">
+                <div class="day-label">${day.day} · ${day.date}</div>
+                ${day.route ? `<a href="${day.route}" class="btn-route" target="_blank"><i class="fas fa-route"></i> 住宿出發路線</a>` : ''}
+            </div>
+            ${day.items.map(item => item.trans ? 
+                `<div class="trans-node">${item.trans}</div>` : 
+                `<div class="card">
+                    <span class="tag">${item.tag}</span>
+                    <div class="title">${item.title}</div>
+                    <div class="info">${item.info}</div>
+                    ${item.map ? `<a href="${item.map}" class="btn-map" target="_blank"><i class="fas fa-location-arrow"></i> Google Maps</a>` : ''}
+                </div>`
+            ).join('')}
+        `).join('');
+
+        // 渲染按摩候補
+        document.getElementById('massage-list').innerHTML = BACKUP_LIST.massage.map(i => `
+            <div class="backup-card">
+                <div>
+                    <div style="font-weight:600; font-size:1rem;">${i.name}</div>
+                    <div style="font-size:0.75rem; color:#999; margin-top:4px;">🕙 ${i.time}</div>
+                </div>
+                <a href="${i.map}" class="btn-map" target="_blank">導航</a>
+            </div>`).join('');
+
+        // 渲染酒吧候補
+        document.getElementById('bar-list').innerHTML = BACKUP_LIST.bars.map(i => `
+            <div class="backup-card">
+                <div>
+                    <div style="font-weight:600; font-size:1rem;">${i.name}</div>
+                    <div style="font-size:0.75rem; color:#999; margin-top:4px;">🕙 ${i.time}</div>
+                </div>
+                <a href="${i.map}" class="btn-map" target="_blank">導航</a>
+            </div>`).join('');
     }
 
-    // 記帳
-    function addExp() {
-        const n = document.getElementById('exp-n').value;
-        const a = document.getElementById('exp-a').value;
-        const p = document.getElementById('exp-p').value;
-        if(!n || !a) return;
-        const data = { n, a: parseInt(a), p };
-        let arr = JSON.parse(localStorage.getItem('hn_money')) || [];
-        arr.push(data);
-        localStorage.setItem('hn_money', JSON.stringify(arr));
-        renderExp();
-        document.getElementById('exp-n').value=''; document.getElementById('exp-a').value='';
-    }
-
-    function renderExp() {
-        const list = document.getElementById('expense-list');
-        const arr = JSON.parse(localStorage.getItem('hn_money')) || [];
-        list.innerHTML = '';
-        let y=0, p=0;
-        arr.forEach(i => {
-            y += i.p==='Yu' ? i.a : 0;
-            p += i.p==='Pa' ? i.a : 0;
-            list.innerHTML += `<li><span><span class="payer-tag" style="background:${i.p==='Yu'?'#E76F51':'#264653'}">${i.p}</span>${i.n}</span><span>${i.a.toLocaleString()}</span></li>`;
-        });
-        const diff = (y - p) / 2;
-        const res = document.getElementById('settle');
-        if(diff > 0) res.innerHTML = `旅伴應給 Yu Wei: ${diff.toLocaleString()} VND (NT$ ${(diff/RATE).toFixed(0)})`;
-        else if(diff < 0) res.innerHTML = `Yu Wei 應給旅伴: ${Math.abs(diff).toLocaleString()} VND (NT$ ${(Math.abs(diff)/RATE).toFixed(0)})`;
-        else res.innerText = "帳目平衡";
-    }
-
-    function clearExp() { if(confirm('清除記帳？')){ localStorage.removeItem('hn_money'); renderExp(); } }
-
-    // Todo List
-    const defaultTodos = ["護照/簽證", "網卡/Esim", "自潛面鏡", "手帳本與筆", "長榮航空 App Check-in", "換好基本美金/披索"];
-    function renderTodo() {
-        const list = document.getElementById('todo-list');
-        let arr = JSON.parse(localStorage.getItem('hn_todo')) || defaultTodos;
-        list.innerHTML = '';
-        arr.forEach((t, idx) => {
-            list.innerHTML += `<div class="todo-item"><input type="checkbox"> <span>${t}</span></div>`;
-        });
-    }
-    function addTodo() {
-        const val = document.getElementById('new-todo').value;
-        if(!val) return;
-        let arr = JSON.parse(localStorage.getItem('hn_todo')) || defaultTodos;
-        arr.push(val);
-        localStorage.setItem('hn_todo', JSON.stringify(arr));
-        renderTodo();
-        document.getElementById('new-todo').value = '';
-    }
-
-    renderExp(); renderTodo();
+    // 頁面載入完成後啟動
+    window.onload = renderApp;
 </script>
 </body>
 </html>
