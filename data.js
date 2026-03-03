@@ -39,7 +39,7 @@ const ITINERARY_DATA = [
                 menu: ["Bún chả (烤肉米線 | Grilled Pork)", "Nem cua bể (蟹肉炸春捲)"]
             },
             { trans: "🚶 步行約 8 分鐘" },
-            { tag: "Shop", title: "36古街 質感小店 (精選)", info: "營業時間：10:00 - 20:00", map: "https://maps.app.goo.gl/wk62BSXHWaZa69Tu7?g_st=ipc" },
+            { tag: "Shop", title: "文創小店 Líu Lô Arts Hàng Da", info: "營業時間：10:00 - 20:00", map: "https://maps.app.goo.gl/wk62BSXHWaZa69Tu7?g_st=ipc" },
             { trans: "🚶 步行約 5 分鐘" },
             { tag: "Money", title: "換錢地點 (金店)", info: "營業時間：08:30 - 19:00", map: "https://maps.app.goo.gl/NPdeDQ5FfXCzZx457?g_st=ipc" },
             { trans: "🚶 步行約 10 分鐘" },
