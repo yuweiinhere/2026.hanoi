@@ -98,7 +98,7 @@
 
 <nav class="tab-bar">
     <div class="tab-item active" onclick="showPage('itinerary', this)"><i class="fas fa-map-marked-alt"></i>行程</div>
-    <div class="tab-item" onclick="showPage('backup', this)"><i class="fas fa-moon"></i>按摩/酒吧</div>
+    <div class="tab-item" onclick="showPage('backup', this)"><i class="fas fa-moon"></i>候補</div>
 </nav>
 
 <script>
@@ -159,7 +159,7 @@
         `).join('');
 
         const backupContainer = document.getElementById('backup-container');
-        let backupHtml = `<h3 style="color:var(--accent);"><i class="fas fa-spa"></i> 按摩</h3>`;
+        let backupHtml = `<h3 style="color:var(--accent);"><i class="fas fa-spa"></i> 按摩候補</h3>`;
         backupHtml += BACKUP_LIST.massage.map(i => `
             <div class="backup-card">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -169,7 +169,7 @@
                 <div style="margin-top:10px; font-size:0.75rem; color:var(--sub); line-height:1.4;">${i.menu.join(' · ')}</div>
             </div>`).join('');
         
-        backupHtml += `<h3 style="color:var(--accent); margin-top:30px;"><i class="fas fa-cocktail"></i> 酒吧</h3>`;
+        backupHtml += `<h3 style="color:var(--accent); margin-top:30px;"><i class="fas fa-cocktail"></i> 酒吧候補</h3>`;
         backupHtml += BACKUP_LIST.bars.map(i => `
             <div class="backup-card">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
