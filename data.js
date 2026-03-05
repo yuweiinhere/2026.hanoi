@@ -59,11 +59,7 @@ const ITINERARY_DATA = [
             { 
                 tag: "Food", title: "選項四: Tung's Kitchen", info: "營業時間：10:00 - 22:30", map: "https://maps.app.goo.gl/NQHdAQZuZyG61VYh6",
                 menu: ["湄公河煎蛋餅"]
-            },
-
-            { trans: "🚗 Grab 車程約 6 分鐘" },
-
-            { tag: "Bar", title: "Binh Minh Jazz Club", info: "表演時間：21:00 - 23:00", map: "https://maps.app.goo.gl/deGyysh9jKRC3na98?g_st=ipc" }
+            }
         ]
     },
     {
@@ -126,7 +122,8 @@ const ITINERARY_DATA = [
             { 
                 tag: "Food", title: "雞蛋咖啡始祖: Cà Phê Giảng", info: "營業時間：07:00 - 22:00", map: "https://maps.app.goo.gl/FE5HmPoDRVA6RY7w7?g_st=ipc",
                 menu: ["Cà phê trứng (雞蛋咖啡 | Egg Coffee)", "Chè (越式甜湯 | Sweet Soup)"]
-            }
+            },
+            { tag: "Bar", title: "Binh Minh Jazz Club", info: "表演時間：21:00 - 23:00", map: "https://maps.app.goo.gl/deGyysh9jKRC3na98?g_st=ipc" }
         ]
     },
     {
